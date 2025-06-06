@@ -1,1 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Página Avanzada con Overlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fuente y estilos avanzados -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+    }
+    .background-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 1;
+      background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+      opacity: 0.5;
+      filter: blur(3px);
+    }
+    .music-bar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      z-index: 3;
+      background: rgba(30, 30, 30, 0.6);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      padding: 10px 30px;
+      backdrop-filter: blur(7px);
+    }
+    .music-bar audio {
+      width: 300px;
+    }
+    .counter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      background: rgba(0,0,0,0.25);
+      border-radius: 30px;
+      padding: 40px 60px;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      border: 1px solid rgba(255,255,255,0.18);
+      text-align: center;
+      color: #fff;
+      font-size: 3rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      backdrop-filter: blur(5px);
+      transition: background 0.5s;
+      user-select: none;
+    }
+    .counter-label {
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 1.2px;
+      opacity: 0.8;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .overlay-btn {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      z-index: 5;
+      background: linear-gradient(90deg, #1a98e0 0%, #38ef7d 100%);
+      color: #fff;
+      border: none;
+      outline: none;
+      padding: 18px 36px;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      box-shadow: 0 6px 24px rgba(56,239,125,0.2);
+      cursor: pointer;
+      opacity: 0.95;
+      transition: transform 0.2s, box-shadow 0.3s, opacity 0.2s;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .overlay-btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 12px 32px rgba(26,152,224,0.35);
+      opacity: 1;
+    }
+    .overlay-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+    @media (max-width: 600px) {
+      .counter {
+        font-size: 2rem;
+        padding: 20px 18px;
+      }
+      .music-bar audio {
+        width: 180px;
+      }
+      .overlay-btn {
+        padding: 12px 18px;
+        font-size: 0.95rem;
+        bottom: 16px;
+        right: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-overlay"></div>
 
+  <div class="music-bar">
+    <span style="color:#fff;margin-right:15px;">🎵 Música:</span>
+    <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop controls></audio>
+  </div>
+
+  <div class="counter" id="view-counter">
+    <span class="counter-label">Vistas de esta página</span>
+    <span id="counter-number">0</span>
+  </div>
+
+  <button class="overlay-btn" onclick="window.location.href='https://www.example.com'">
+    Ir a otra página
+    <svg viewBox="0 0 24 24"><path d="M13.172 12l-4.95-4.95 1.414-1.414L17 12l-7.364 7.364-1.414-1.414z"/></svg>
+  </button>
+
+  <script>
+    // Contador de vistas usando localStorage para evitar recargar cada vez
+    function updateViewCounter() {
+      let counter = localStorage.getItem('page_views') || 0;
+      counter++;
+      localStorage.setItem('page_views', counter);
+      document.getElementById('counter-number').textContent = counter;
+    }
+    updateViewCounter();
+
+    // Opcional: Pausa música si el usuario sale de la pestaña
+    document.addEventListener('visibilitychange', function() {
+      var music = document.getElementById('bg-music');
+      if (document.hidden) {
+        music.pause();
+      } else {
+        music.play().catch(()=>{});
+      }
+    });
+    // Opcional: Puedes personalizar el background cambiando la URL de .background-overlay
+    // y la música cambiando src del audio
+  </script>
+</body>
+</html>
